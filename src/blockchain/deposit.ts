@@ -53,5 +53,7 @@ export const depositAlgo = async (
   } catch (error) {
     console.error("Deposit failed:", error);
   }
-  
+  console.log("App ID:", appId);
+console.log("App Address:", algosdk.getApplicationAddress(appId));
+
 };
