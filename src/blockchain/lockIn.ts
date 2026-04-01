@@ -60,8 +60,16 @@ export const lockInAssets = async (
     console.error("Lock-in failed:", error);
 
     const message = error instanceof Error ? error.message : String(error);
+    
+    // Provide helpful context for common errors
     if (message.includes("no funds")) {
-      throw new Error("You must have savings to lock-in assets.");
+      throw new Error("You must have ALGO savings to lock-in assets. Deposit first.");
+    }
+    if (message.includes("err opcode")) {
+      throw new Error("Lock-in failed: You must have savings before locking. Make a deposit first.");
+    }
+    if (message.includes("logic eval error")) {
+      throw new Error("Lock-in failed: Verify you have savings and try again.");
     }
 
     throw error;

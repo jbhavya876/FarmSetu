@@ -767,50 +767,54 @@ function App() {
                   Opt-In to App
                 </NeonButton>
               )}
-              {effectiveIsOpted && (
-                <>
-                  <NeonButton
-                    variant="secondary"
-                    onClick={handleWithdraw}
-                    disabled={!appId || !withdrawAmount || !isConnected}
-                  >
-                    Withdraw
-                  </NeonButton>
-                  <NeonButton
-                    variant="warning"
-                    onClick={handleLockIn}
-                    disabled={!appId || !lockDays || !isConnected}
-                  >
-                    Lock Assets
-                  </NeonButton>
-                </>
-              )}
             </div>
 
             {effectiveIsOpted && (
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div>
-                  <label className="mb-2 block text-xs uppercase tracking-widest text-slate-400">Withdrawal Amount</label>
+              <div className="mt-6 space-y-6 border-t border-slate-700 pt-6">
+                {/* Withdrawal Section */}
+                <div className="rounded-2xl border border-slate-700/60 bg-slate-950/50 p-4">
+                  <h3 className="mb-4 text-sm uppercase tracking-[0.2em] text-slate-300">💸 Withdrawal Section</h3>
+                  <label className="mb-3 block text-xs uppercase tracking-widest text-slate-400">Withdrawal Amount (ALGO)</label>
                   <input
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                    className="mb-3 w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-red-400 focus:ring-2 focus:ring-red-400/20"
                     type="number"
                     min="0"
                     step="0.000001"
-                    placeholder="Amount to withdraw (ALGO)"
+                    placeholder="e.g., 5.5"
                     value={withdrawAmount}
                     onChange={(event) => setWithdrawAmount(event.target.value)}
                   />
+                  <NeonButton
+                    variant="secondary"
+                    className="w-full bg-red-900/30 hover:bg-red-900/50"
+                    onClick={handleWithdraw}
+                    disabled={!appId || !withdrawAmount || !isConnected}
+                  >
+                    💸 Withdraw Now
+                  </NeonButton>
                 </div>
-                <div>
-                  <label className="mb-2 block text-xs uppercase tracking-widest text-slate-400">Lock Duration</label>
+
+                {/* Lock-In Section */}
+                <div className="rounded-2xl border border-slate-700/60 bg-slate-950/50 p-4">
+                  <h3 className="mb-4 text-sm uppercase tracking-[0.2em] text-slate-300">🔒 Lock Assets Section</h3>
+                  <p className="mb-4 text-xs text-slate-400">Requires deposits • Cannot withdraw while locked</p>
+                  <label className="mb-3 block text-xs uppercase tracking-widest text-slate-400">Lock Duration (Days)</label>
                   <input
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                    className="mb-3 w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
                     type="number"
                     min="1"
-                    placeholder="Days to lock"
+                    placeholder="e.g., 30"
                     value={lockDays}
                     onChange={(event) => setLockDays(event.target.value)}
                   />
+                  <NeonButton
+                    variant="warning"
+                    className="w-full bg-amber-900/30 hover:bg-amber-900/50"
+                    onClick={handleLockIn}
+                    disabled={!appId || !lockDays || !isConnected}
+                  >
+                    🔒 Lock Assets Now
+                  </NeonButton>
                 </div>
               </div>
             )}

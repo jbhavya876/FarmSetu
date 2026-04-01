@@ -59,6 +59,20 @@ export const withdrawAlgo = async (
     };
   } catch (error) {
     console.error("Withdrawal failed:", error);
+
+    const message = error instanceof Error ? error.message : String(error);
+    
+    // Provide helpful context for common errors
+    if (message.includes("err opcode")) {
+      throw new Error("Withdrawal failed: Assets are locked or you don't have enough to withdraw.");
+    }
+    if (message.includes("logic eval error")) {
+      throw new Error("Withdrawal failed: Check if assets are locked and try again.");
+    }
+    if (message.includes("no funds")) {
+      throw new Error("Withdrawal failed: Insufficient balance. Check your vault savings.");
+    }
+
     throw error;
   }
 };
