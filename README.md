@@ -18,13 +18,20 @@ A decentralized forward contract platform for farmers and buyers built on Algora
 npm install
 ```
 
-### 2. Run Development Server
+### 2. Configure Environment
+```bash
+cp .env.example .env.local
+```
+
+Set `VITE_CONTRACT_MODE=local` for mock mode, or `VITE_CONTRACT_MODE=onchain` and set `VITE_FORWARD_APP_ID`.
+
+### 3. Run Development Server
 ```bash
 npm run dev
 ```
 Open [http://localhost:5176](http://localhost:5176) to view the app.
 
-### 3. Test Wallet Integration
+### 4. Test Wallet Integration
 - Click "🌾 Connect as Farmer" or "🛒 Connect as Buyer"
 - Pera Wallet extension will open for connection
 - After connecting, you'll see the role-specific dashboard

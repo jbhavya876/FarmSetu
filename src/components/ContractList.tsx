@@ -3,9 +3,11 @@ import type {
   FarmSetuForwardContract,
   AcceptContractInput,
   SettleContractInput,
+  UpdatePriceInput,
 } from "../types/contract";
 import AcceptContractModal from "./AcceptContractModal";
 import SettleContractModal from "./SettleContractModal";
+import UpdatePriceModal from "./UpdatePriceModal";
 
 interface ContractListProps {
   contracts: FarmSetuForwardContract[];
@@ -14,6 +16,7 @@ interface ContractListProps {
   userRole?: "farmer" | "buyer";
   onAccept: (input: AcceptContractInput) => Promise<void>;
   onSettle: (input: SettleContractInput) => Promise<void>;
+  onUpdatePrice: (input: UpdatePriceInput) => Promise<void>;
 }
 
 function ContractList({
@@ -23,9 +26,10 @@ function ContractList({
   userRole = "farmer",
   onAccept,
   onSettle,
+  onUpdatePrice,
 }: ContractListProps) {
   const [selectedContract, setSelectedContract] = useState<FarmSetuForwardContract | null>(null);
-  const [modalType, setModalType] = useState<"accept" | "settle" | null>(null);
+  const [modalType, setModalType] = useState<"accept" | "settle" | "update_price" | null>(null);
 
   const handleCloseModal = () => {
     setSelectedContract(null);
@@ -66,9 +70,11 @@ function ContractList({
         {contracts.map((contract) => {
           const isContractOwner = contract.farmer_address === userAddress;
           const isBuyer = contract.buyer_address === userAddress;
+          const isOracle = contract.oracle_address === userAddress;
           const isFarmer = userRole === "farmer";
           const canAccept = contract.contract_status === "CREATED" && !isContractOwner && !isBuyer;
           const canSettle = contract.contract_status === "ACCEPTED" && (isContractOwner || isBuyer);
+          const canUpdatePrice = isOracle && contract.contract_status !== "SETTLED";
 
           return (
             <article key={contract.appId} className="fs-card rounded-2xl p-6">
@@ -147,6 +153,18 @@ function ContractList({
                     </button>
                   )}
 
+                  {canUpdatePrice && (
+                    <button
+                      onClick={() => {
+                        setSelectedContract(contract);
+                        setModalType("update_price");
+                      }}
+                      className="fs-btn fs-btn-primary px-4 py-2 text-sm"
+                    >
+                      Update Price
+                    </button>
+                  )}
+
                   {contract.contract_status === "SETTLED" && (
                     <span className="rounded-lg bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600">
                       Completed
@@ -177,6 +195,13 @@ function ContractList({
       )}
       {modalType === "settle" && selectedContract && (
         <SettleContractModal contract={selectedContract} onSettle={onSettle} onClose={handleCloseModal} />
+      )}
+      {modalType === "update_price" && selectedContract && (
+        <UpdatePriceModal
+          contract={selectedContract}
+          onUpdatePrice={onUpdatePrice}
+          onClose={handleCloseModal}
+        />
       )}
     </>
   );

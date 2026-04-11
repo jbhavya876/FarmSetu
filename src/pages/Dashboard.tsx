@@ -137,6 +137,7 @@ function Dashboard({ userRole, wallet }: DashboardProps) {
             userRole={currentRole}
             onAccept={contracts.accept}
             onSettle={contracts.settle}
+            onUpdatePrice={contracts.updatePrice}
           />
         )}
 
